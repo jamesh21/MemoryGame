@@ -2,6 +2,42 @@
   box-sizing border-box;
   margin: 0;
 }
+
 h1 {
   text-align: center;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card-container {
+  width: 660px;
+  min-height: 680px;
+  border-style: solid;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px;
+  margin: 0 0 3em;
+}
+
+.card {
+  list-style-type: none;
+  width: 125px;
+  height: 125px;
+  background: #2e3d49;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.card:not(:nth-child(4n+4)) {
+  margin-right: 25px;
 }
