@@ -24,11 +24,16 @@ function placeCards(element, index) {
   cardIcon.classList.add(`fa-${element}`);
 }
 
-// function addCardListeners() {
-//
-// }
+//function to listen to individual card clicks
+function addCardListeners() {
+  for (let i = 0; i < cardContainer.children.length; i++) {
+    cardContainer.children[i].addEventListener('click', function (event) {
+      event.target.classList.add('card-open');
+    });
+  }
+}
 
 // shuffle the starting list
 list = shuffle(list);
+addCardListeners();
 list.forEach(placeCards);
-// list.forEach(addCardListeners);
