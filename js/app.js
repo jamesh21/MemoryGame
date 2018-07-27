@@ -1,3 +1,4 @@
+// List of variables
 const cardContainer = document.querySelector('.card-container');
 const movesContainer = document.querySelector('.num-moves');
 const timerContainer = document.querySelector('.timer');
@@ -78,8 +79,28 @@ function incorrectAnswerAction(firstCard, secondCard) {
 // function to check if the the player has won the game.
 function checkIfWon() {
   if (numCardsLeft === 0) {
-    setTimeout(alert, 1000, 'You Win');
+    // setTimeout(alert, 1000, 'You Win');
+    swal({
+      title: "Congratulations You Win!",
+      // icon: "info",
+      buttons: {
+        confirm: "Play Again?",
+        cancel: true
+      }
+    })
+    .then((again) => {
+      if (again) {
+        // TODO reset function called here
+        swal("Poof! Your imaginary file has been deleted!", {
+          icon: "success",
+        });
+      }
+    });
   }
+}
+
+function resetGame () {
+
 }
 
 // shuffle the starting list
