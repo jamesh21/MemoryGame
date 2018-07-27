@@ -2,7 +2,8 @@
 const cardContainer = document.querySelector('.card-container');
 const movesContainer = document.querySelector('.num-moves');
 const timerContainer = document.querySelector('.timer');
-const startTime = Date.now();
+const fullContainer = document.querySelector('.container');
+let startTime = Date.now();
 let list = ['android', 'react', 'java', 'node-js', 'node-js', 'react', 'html5',
             'css3-alt', 'css3-alt', 'html5', 'android', 'python', 'python', 'java',
             'github', 'github'];
@@ -12,73 +13,74 @@ let numMoves = Number(movesContainer.textContent);
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-  let currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length, temporaryValue, randomIndex;
 
-  while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+    return array;
 }
 
 // function is used to place items in the list to their respective cards
 function placeCards(element, index) {
-  const cardIcon = cardContainer.children[index].children[0];
-  cardIcon.classList.add(`fa-${element}`);
+    const cardIcon = cardContainer.children[index].children[0];
+    cardIcon.classList.add(`fa-${element}`);
 }
 
 //function to listen to individual card clicks
 function addCardListeners() {
-  for (let i = 0; i < cardContainer.children.length; i++) {
-    cardContainer.children[i].addEventListener('click', function (event) {
-      event.target.classList.add('card-open');
-      numMoves++;
-      movesContainer.textContent = numMoves;
+    for (let i = 0; i < cardContainer.children.length; i++) {
+        cardContainer.children[i].addEventListener('click', function (event) {
+          event.target.classList.add('card-open');
+          numMoves++;
+          movesContainer.textContent = numMoves;
 
-      // no card is currently selected
-      if (firstCard === null) {
-        firstCard = event.target;
-        console.log(firstCard);
-      } else { // first card selected
-        let secondCard = event.target;
-        if (checkIfSame(firstCard, secondCard)) {
-          console.log('Same Card');
-          correctAnswerAction();
-        } else {
-          console.log('Diff Card');
-          setTimeout(incorrectAnswerAction, 1000, firstCard, secondCard);
+          // no card is currently selected
+          if (firstCard === null) {
+            firstCard = event.target;
+            console.log(firstCard);
+          } else { // first card selected
+            let secondCard = event.target;
+            if (checkIfSame(firstCard, secondCard)) {
+              console.log('Same Card');
+              correctAnswerAction();
+            } else {
+              console.log('Diff Card');
+              cardContainer.classList.toggle("mouse-stop");
+              setTimeout(incorrectAnswerAction, 1000, firstCard, secondCard);
+            }
+
+            firstCard = null;
         }
-
-        firstCard = null;
-      }
     });
-  }
+    }
 }
 
 // function to check if the two selected cards are the same
 function checkIfSame(firstCard, secondCard) {
-  return firstCard.children[0].classList.item(1) === secondCard.children[0].classList.item(1);
+    return firstCard.children[0].classList.item(1) === secondCard.children[0].classList.item(1);
 }
 
 // function is called when 2 cards are matched. The cards will stay flipped
 function correctAnswerAction() {
-  numCardsLeft -= 2;
-  checkIfWon();
+    numCardsLeft -= 2;
+    checkIfWon();
 }
 
 // function is called if the 2 cards do not match. The cards will turn face down.
 function incorrectAnswerAction(firstCard, secondCard) {
-  firstCard.classList.remove('card-open');
-  secondCard.classList.remove('card-open');
+    firstCard.classList.remove('card-open');
+    secondCard.classList.remove('card-open');
+    cardContainer.classList.toggle("mouse-stop");
 }
 
 // function to check if the the player has won the game.
 function checkIfWon() {
-  if (numCardsLeft === 0) {
+    if (numCardsLeft === 0) {
     // setTimeout(alert, 1000, 'You Win');
     swal({
       title: "Congratulations You Win!",
@@ -91,16 +93,37 @@ function checkIfWon() {
     .then((again) => {
       if (again) {
         // TODO reset function called here
-        swal("Poof! Your imaginary file has been deleted!", {
+        swal("Game Restarted", {
           icon: "success",
         });
+        resetGame();
       }
     });
-  }
+    }
 }
 
+// Resets the Game
 function resetGame () {
+    flipCardsFaceDown();
+    list.forEach(removeCards);
+    list = shuffle(list);
+    list.forEach(placeCards);
+    numMoves = 0;
+    startTime = Date.now();
+    numCardsLeft = list.length;
+}
 
+// Flips all the cards face down
+function flipCardsFaceDown () {
+    for (let i = 0; i < cardContainer.children.length; i++) {
+        cardContainer.children[i].classList.remove('card-open');
+    }
+}
+
+// Removes the list of the respective card
+function removeCards (element, index) {
+    const cardIcon = cardContainer.children[index].children[0];
+    cardIcon.classList.remove(`fa-${element}`);
 }
 
 // shuffle the starting list
@@ -110,5 +133,5 @@ list.forEach(placeCards);
 
 // Used for time elapsed
 window.setInterval(function () {
-  timerContainer.textContent = Math.floor((Date.now() - startTime) / 1000);
+    timerContainer.textContent = Math.floor((Date.now() - startTime) / 1000);
 }, 1000);

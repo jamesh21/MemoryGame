@@ -48,3 +48,7 @@ h1 {
   font-size: 50px;
   cursor: default;
 }
+
+.mouse-stop {
+    pointer-events: none;
+}
