@@ -42,18 +42,21 @@ function addCardListeners() {
           // no card is currently selected
           if (firstCard === null) {
             firstCard = event.target;
-            console.log(firstCard);
+            // console.log(firstCard);
           } else { // first card selected
             let secondCard = event.target;
             if (checkIfSame(firstCard, secondCard)) {
-              console.log('Same Card');
+              // console.log('Same Card');
+              firstCard.classList.toggle('correct-match');
+              secondCard.classList.toggle('correct-match');
               correctAnswerAction();
             } else {
-              console.log('Diff Card');
+              // console.log('Diff Card');
               cardContainer.classList.toggle("mouse-stop");
+              firstCard.classList.toggle('wrong-match');
+              secondCard.classList.toggle('wrong-match');
               setTimeout(incorrectAnswerAction, 1000, firstCard, secondCard);
             }
-
             firstCard = null;
         }
     });
@@ -76,6 +79,8 @@ function incorrectAnswerAction(firstCard, secondCard) {
     firstCard.classList.remove('card-open');
     secondCard.classList.remove('card-open');
     cardContainer.classList.toggle("mouse-stop");
+    firstCard.classList.toggle('wrong-match');
+    secondCard.classList.toggle('wrong-match');
 }
 
 // function to check if the the player has won the game.

@@ -24,6 +24,9 @@ h1 {
   align-items: center;
   padding: 32px;
   margin: 0 0 3em;
+  background-image: linear-gradient(to right top, #61f9c4, #00dbeb, #00b6ff, #0083ff, #7a12eb);
+  box-shadow: 5px 10px 8px 10px #888888;
+  border-radius: 9px;
 }
 
 .card {
@@ -46,9 +49,29 @@ h1 {
 
 .card-open {
   font-size: 50px;
+  /* transition: all 0.5 ease;
+  transform: rotateY(180deg); */
+  animation-name: fadeIn;
+  animation-duration: .75s;
   cursor: default;
+}
+
+.wrong-match {
+    background: #f45d5d;
+}
+.correct-match {
+    background: #42f973;
 }
 
 .mouse-stop {
     pointer-events: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
