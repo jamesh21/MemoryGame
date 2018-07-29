@@ -51,9 +51,10 @@ h1 {
   font-size: 50px;
   /* transition: all 0.5 ease;
   transform: rotateY(180deg); */
-  animation-name: fadeIn;
-  animation-duration: .75s;
-  cursor: default;
+  animation-name: flipInY;
+  animation-duration: 1.5s;
+  /* cursor: default; */
+  pointer-events: none;
 }
 
 .wrong-match {
@@ -64,7 +65,33 @@ h1 {
 }
 
 .mouse-stop {
-    pointer-events: none;
+    /* pointer-events: none; */
+}
+
+@keyframes flipInY {
+	from {
+		transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
+		/* animation-timing-function: ease-in; */
+		/* opacity: 0; */
+	}
+
+	40% {
+		transform: perspective(400px) rotate3d(0, 1, 0, -20deg);
+		/* animation-timing-function: ease-in; */
+	}
+
+	60% {
+		transform: perspective(400px) rotate3d(0, 1, 0, 10deg);
+		opacity: 1;
+	}
+
+	80% {
+		transform: perspective(400px) rotate3d(0, 1, 0, -5deg);
+	}
+
+	to {
+		transform: perspective(400px);
+	}
 }
 
 @keyframes fadeIn {

@@ -36,25 +36,22 @@ function addCardListeners() {
     for (let i = 0; i < cardContainer.children.length; i++) {
         cardContainer.children[i].addEventListener('click', function (event) {
           event.target.classList.add('card-open');
-          numMoves++;
-          movesContainer.textContent = numMoves;
 
           // no card is currently selected
           if (firstCard === null) {
             firstCard = event.target;
-            // console.log(firstCard);
+            firstCard.classList.add('mouse-stop'); // stops card from being reclicked
           } else { // first card selected
             let secondCard = event.target;
+            secondCard.classList.add('mouse-stop');
+            numMoves++;
+            movesContainer.textContent = numMoves;
             if (checkIfSame(firstCard, secondCard)) {
-              // console.log('Same Card');
-              firstCard.classList.toggle('correct-match');
-              secondCard.classList.toggle('correct-match');
-              correctAnswerAction();
+                correctAnswerAction(firstCard, secondCard);
             } else {
-              // console.log('Diff Card');
-              cardContainer.classList.toggle("mouse-stop");
-              firstCard.classList.toggle('wrong-match');
-              secondCard.classList.toggle('wrong-match');
+              cardContainer.classList.add('mouse-stop');
+              firstCard.classList.add('wrong-match');
+              secondCard.classList.add('wrong-match');
               setTimeout(incorrectAnswerAction, 1000, firstCard, secondCard);
             }
             firstCard = null;
@@ -69,7 +66,9 @@ function checkIfSame(firstCard, secondCard) {
 }
 
 // function is called when 2 cards are matched. The cards will stay flipped
-function correctAnswerAction() {
+function correctAnswerAction(firstCard, secondCard) {
+    firstCard.classList.add('correct-match');
+    secondCard.classList.add('correct-match');
     numCardsLeft -= 2;
     checkIfWon();
 }
@@ -78,9 +77,11 @@ function correctAnswerAction() {
 function incorrectAnswerAction(firstCard, secondCard) {
     firstCard.classList.remove('card-open');
     secondCard.classList.remove('card-open');
-    cardContainer.classList.toggle("mouse-stop");
-    firstCard.classList.toggle('wrong-match');
-    secondCard.classList.toggle('wrong-match');
+    cardContainer.classList.remove('mouse-stop');
+    firstCard.classList.remove('wrong-match');
+    secondCard.classList.remove('wrong-match');
+    firstCard.classList.remove('mouse-stop');
+    secondCard.classList.remove('mouse-stop');
 }
 
 // function to check if the the player has won the game.
@@ -89,7 +90,6 @@ function checkIfWon() {
     // setTimeout(alert, 1000, 'You Win');
     swal({
       title: "Congratulations You Win!",
-      // icon: "info",
       buttons: {
         confirm: "Play Again?",
         cancel: true
@@ -97,7 +97,6 @@ function checkIfWon() {
     })
     .then((again) => {
       if (again) {
-        // TODO reset function called here
         swal("Game Restarted", {
           icon: "success",
         });
@@ -110,10 +109,11 @@ function checkIfWon() {
 // Resets the Game
 function resetGame () {
     flipCardsFaceDown();
-    list.forEach(removeCards);
+    list.forEach(resetCards);
     list = shuffle(list);
     list.forEach(placeCards);
     numMoves = 0;
+    movesContainer.textContent = numMoves;
     startTime = Date.now();
     numCardsLeft = list.length;
 }
@@ -125,10 +125,12 @@ function flipCardsFaceDown () {
     }
 }
 
-// Removes the list of the respective card
-function removeCards (element, index) {
+// Resets the list of the respective card
+function resetCards (element, index) {
     const cardIcon = cardContainer.children[index].children[0];
     cardIcon.classList.remove(`fa-${element}`);
+    cardContainer.children[index].classList.remove('correct-match');
+    cardContainer.children[index].classList.remove('mouse-stop');
 }
 
 // shuffle the starting list
