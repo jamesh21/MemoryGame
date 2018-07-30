@@ -4,6 +4,9 @@ const movesContainer = document.querySelector('.num-moves');
 const timerContainer = document.querySelector('.timer');
 const fullContainer = document.querySelector('.container');
 const resetButton = document.querySelector('#reset-button');
+const thirdStar = document.querySelector('#star-3');
+const secondStar = document.querySelector('#star-2');
+const firstStar = document.querySelector('#star-1');
 let startTime = Date.now();
 let list = ['android', 'react', 'java', 'node-js', 'node-js', 'react', 'html5',
             'css3-alt', 'css3-alt', 'html5', 'android', 'python', 'python', 'java',
@@ -12,6 +15,7 @@ let numCardsLeft = list.length;
 let firstCard = null;
 let numMoves = Number(movesContainer.textContent);
 let timeStop = false;
+let currentStarCount = 3;
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -53,6 +57,10 @@ function addCardListeners() {
               secondCard.classList.add('wrong-match');
               cardContainer.classList.add('mouse-stop');
               setTimeout(incorrectAnswerAction, 1000, firstCard, secondCard);
+            }
+            if (currentStarCount != calculateStars()) {
+                currentStarCount--;
+                updateStarIcons();
             }
             firstCard = null;
         }
@@ -115,6 +123,10 @@ function resetGame () {
     startTime = Date.now();
     timeStop = false;
     numCardsLeft = list.length;
+    thirdStar.classList.remove('far');
+    thirdStar.classList.add('fas');
+    secondStar.classList.remove('far');
+    secondStar.classList.add('fas');
 }
 
 // Flips all the cards face down
@@ -131,7 +143,29 @@ function resetCards (element, index) {
     cardContainer.children[index].classList.remove('correct-match');
 }
 
-// shuffle the starting list
+// Function used to calculate the number of stars left
+function calculateStars () {
+    if (numMoves <= 14) {
+        return 3;
+    } else if (numMoves <= 25) {
+        return 2;
+    } else {
+        return 1;
+    }
+}
+
+// Function used to draw the stars
+function updateStarIcons () {
+    if (currentStarCount == 2) {
+        thirdStar.classList.remove('fas');
+        thirdStar.classList.add('far');
+    } else { // Star count is 1 here
+        secondStar.classList.remove('fas');
+        secondStar.classList.add('far');
+    }
+}
+
+// Shuffle the starting list
 list = shuffle(list);
 addCardListeners();
 list.forEach(placeCards);
@@ -142,6 +176,7 @@ window.setInterval(function () {
         timerContainer.textContent = Math.floor((Date.now() - startTime) / 1000);
 }, 1000);
 
+// Add event listener to the reset button 
 resetButton.addEventListener('click', function () {
     swal({
       title: "Restart?",
@@ -156,6 +191,6 @@ resetButton.addEventListener('click', function () {
           icon: "success",
         });
         resetGame();
-      } 
+      }
     });
 });
