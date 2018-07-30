@@ -3,6 +3,7 @@ const cardContainer = document.querySelector('.card-container');
 const movesContainer = document.querySelector('.num-moves');
 const timerContainer = document.querySelector('.timer');
 const fullContainer = document.querySelector('.container');
+const resetButton = document.querySelector('#reset-button');
 let startTime = Date.now();
 let list = ['android', 'react', 'java', 'node-js', 'node-js', 'react', 'html5',
             'css3-alt', 'css3-alt', 'html5', 'android', 'python', 'python', 'java',
@@ -10,6 +11,7 @@ let list = ['android', 'react', 'java', 'node-js', 'node-js', 'react', 'html5',
 let numCardsLeft = list.length;
 let firstCard = null;
 let numMoves = Number(movesContainer.textContent);
+let timeStop = false;
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -40,18 +42,16 @@ function addCardListeners() {
           // no card is currently selected
           if (firstCard === null) {
             firstCard = event.target;
-            firstCard.classList.add('mouse-stop'); // stops card from being reclicked
           } else { // first card selected
             let secondCard = event.target;
-            secondCard.classList.add('mouse-stop');
             numMoves++;
             movesContainer.textContent = numMoves;
             if (checkIfSame(firstCard, secondCard)) {
                 correctAnswerAction(firstCard, secondCard);
             } else {
-              cardContainer.classList.add('mouse-stop');
               firstCard.classList.add('wrong-match');
               secondCard.classList.add('wrong-match');
+              cardContainer.classList.add('mouse-stop');
               setTimeout(incorrectAnswerAction, 1000, firstCard, secondCard);
             }
             firstCard = null;
@@ -80,29 +80,27 @@ function incorrectAnswerAction(firstCard, secondCard) {
     cardContainer.classList.remove('mouse-stop');
     firstCard.classList.remove('wrong-match');
     secondCard.classList.remove('wrong-match');
-    firstCard.classList.remove('mouse-stop');
-    secondCard.classList.remove('mouse-stop');
 }
 
 // function to check if the the player has won the game.
 function checkIfWon() {
     if (numCardsLeft === 0) {
-    // setTimeout(alert, 1000, 'You Win');
-    swal({
-      title: "Congratulations You Win!",
-      buttons: {
-        confirm: "Play Again?",
-        cancel: true
-      }
-    })
-    .then((again) => {
-      if (again) {
-        swal("Game Restarted", {
-          icon: "success",
+        timeStop = true;
+        swal({
+          title: "Congratulations You Win!",
+          buttons: {
+            confirm: "Play Again?",
+            cancel: true
+          }
+        })
+        .then((again) => {
+          if (again) {
+            swal("Game Restarted", {
+              icon: "success",
+            });
+            resetGame();
+          }
         });
-        resetGame();
-      }
-    });
     }
 }
 
@@ -115,6 +113,7 @@ function resetGame () {
     numMoves = 0;
     movesContainer.textContent = numMoves;
     startTime = Date.now();
+    timeStop = false;
     numCardsLeft = list.length;
 }
 
@@ -130,7 +129,6 @@ function resetCards (element, index) {
     const cardIcon = cardContainer.children[index].children[0];
     cardIcon.classList.remove(`fa-${element}`);
     cardContainer.children[index].classList.remove('correct-match');
-    cardContainer.children[index].classList.remove('mouse-stop');
 }
 
 // shuffle the starting list
@@ -140,5 +138,24 @@ list.forEach(placeCards);
 
 // Used for time elapsed
 window.setInterval(function () {
-    timerContainer.textContent = Math.floor((Date.now() - startTime) / 1000);
+    if (!timeStop)
+        timerContainer.textContent = Math.floor((Date.now() - startTime) / 1000);
 }, 1000);
+
+resetButton.addEventListener('click', function () {
+    swal({
+      title: "Restart?",
+      buttons: {
+        confirm: "Restart",
+        cancel: true
+      }
+    })
+    .then((again) => {
+      if (again) {
+        swal("Game Restarted", {
+          icon: "success",
+        });
+        resetGame();
+      } 
+    });
+});

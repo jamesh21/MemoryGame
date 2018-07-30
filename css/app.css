@@ -65,7 +65,7 @@ h1 {
 }
 
 .mouse-stop {
-    /* pointer-events: none; */
+    pointer-events: none;
 }
 
 @keyframes flipInY {
