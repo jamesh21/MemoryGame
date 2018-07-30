@@ -11,14 +11,17 @@
 <body>
     <div class="container">
         <h1>Memory Game</h1>
-        <div class="game-info">
-          <span class="num-moves">0</span> Moves
-          <span class="timer">0</span> Seconds
-          <i id="star-1" class="fas fa-star"></i>
-          <i id="star-2" class="fas fa-star"></i>
-          <i id="star-3" class="fas fa-star"></i>
+        <div class="left-game-info">
+            <i id="star-1" class="fas fa-star"></i>
+            <i id="star-2" class="fas fa-star"></i>
+            <i id="star-3" class="fas fa-star"></i>
+            <span class="num-moves">0</span> Moves
         </div>
-        <button id="reset-button"><i class="fas fa-sync"></i></button>
+        <div class="right-game-info">
+            Time Elapsed: <span class="timer">0</span> Seconds
+            <button class="reset-button"><i class="fas fa-sync"></i></button>
+        </div>
+
         <ul class="card-container">
           <li class="card"><i class="fab"></i></li>
           <li class="card"><i class="fab"></i></li>

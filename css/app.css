@@ -14,6 +14,20 @@ h1 {
   flex-direction: column;
 }
 
+.left-game-info {
+    display: inline;
+    float: left;
+}
+
+.right-game-info {
+    display: inline;
+    float: left;
+}
+
+.reset-button {
+    background: white;
+}
+
 .card-container {
   width: 660px;
   min-height: 680px;
@@ -49,35 +63,64 @@ h1 {
 
 .card-open {
   font-size: 50px;
-  /* transition: all 0.5 ease;
-  transform: rotateY(180deg); */
-  animation-name: flipInY;
+  animation-name: flip-horizonal;
   animation-duration: 1.5s;
-  /* cursor: default; */
   pointer-events: none;
 }
 
 .wrong-match {
     background: #f45d5d;
+    animation-name: incorrect-animation;
+    animation-duration: 1s;
 }
+
 .correct-match {
     background: #42f973;
+    animation-name: correct-animation;
+    animation-duration: 1s;
 }
 
 .mouse-stop {
     pointer-events: none;
 }
 
-@keyframes flipInY {
+@keyframes correct-animation {
+	from {
+		transform: scale3d(1, 1, 1);
+	}
+
+	30% {
+		transform: scale3d(1.5, 1, 1);
+	}
+
+	40% {
+		transform: scale3d(1, 1.5, 1);
+	}
+
+	50% {
+		transform: scale3d(1.25, 0.60, 1);
+	}
+
+	65% {
+		transform: scale3d(0.60, 1.25, 1);
+	}
+
+	75% {
+		transform: scale3d(1.10, .95, 1);
+	}
+
+	to {
+		transform: scale3d(1, 1, 1);
+	}
+}
+
+@keyframes flip-horizonal {
 	from {
 		transform: perspective(400px) rotate3d(0, 1, 0, 90deg);
-		/* animation-timing-function: ease-in; */
-		/* opacity: 0; */
 	}
 
 	40% {
 		transform: perspective(400px) rotate3d(0, 1, 0, -20deg);
-		/* animation-timing-function: ease-in; */
 	}
 
 	60% {
@@ -94,11 +137,25 @@ h1 {
 	}
 }
 
-@keyframes fadeIn {
+@keyframes incorrect-animation {
+	from {
+		transform: scale3d(1, 1, 1);
+	}
+
+	50% {
+		transform: scale3d(1.5, 1.5, 1.5);
+	}
+
+	to {
+		transform: scale3d(1, 1, 1);
+	}
+}
+
+/* @keyframes fadeIn {
   from {
     opacity: 0;
   }
   to {
     opacity: 1;
   }
-}
+} */

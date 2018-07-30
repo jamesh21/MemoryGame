@@ -3,7 +3,7 @@ const cardContainer = document.querySelector('.card-container');
 const movesContainer = document.querySelector('.num-moves');
 const timerContainer = document.querySelector('.timer');
 const fullContainer = document.querySelector('.container');
-const resetButton = document.querySelector('#reset-button');
+const resetButton = document.querySelector('.reset-button');
 const thirdStar = document.querySelector('#star-3');
 const secondStar = document.querySelector('#star-2');
 const firstStar = document.querySelector('#star-1');
@@ -95,16 +95,16 @@ function checkIfWon() {
     if (numCardsLeft === 0) {
         timeStop = true;
         swal({
-          title: "Congratulations You Win!",
+          title: 'Congratulations You Win!',
           buttons: {
-            confirm: "Play Again?",
+            confirm: 'Play Again?',
             cancel: true
           }
         })
         .then((again) => {
           if (again) {
-            swal("Game Restarted", {
-              icon: "success",
+            swal('Game Restarted', {
+              icon: 'success',
             });
             resetGame();
           }
@@ -176,19 +176,19 @@ window.setInterval(function () {
         timerContainer.textContent = Math.floor((Date.now() - startTime) / 1000);
 }, 1000);
 
-// Add event listener to the reset button 
+// Add event listener to the reset button
 resetButton.addEventListener('click', function () {
     swal({
-      title: "Restart?",
+      title: 'Restart?',
       buttons: {
-        confirm: "Restart",
+        confirm: 'Restart',
         cancel: true
       }
     })
     .then((again) => {
       if (again) {
-        swal("Game Restarted", {
-          icon: "success",
+        swal('Game Restarted', {
+          icon: 'success',
         });
         resetGame();
       }
