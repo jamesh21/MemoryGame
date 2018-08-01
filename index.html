@@ -6,22 +6,24 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Memory Game</title>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
   <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
     <div class="container">
         <h1>Memory Game</h1>
-        <div class="left-game-info">
-            <i id="star-1" class="fas fa-star"></i>
-            <i id="star-2" class="fas fa-star"></i>
-            <i id="star-3" class="fas fa-star"></i>
-            <span class="num-moves">0</span> Moves
+        <div class="game-info">
+            <div class="top-game-info">
+                <i id="star-1" class="fas fa-star"></i>
+                <i id="star-2" class="fas fa-star"></i>
+                <i id="star-3" class="fas fa-star"></i>
+                <span class="num-moves">0</span> Moves
+            </div>
+            <div class="bottom-game-info">
+                Time Elapsed: <span class="timer">0</span> Seconds
+                <button class="reset-button"><i class="fas fa-sync"></i></button>
+            </div>
         </div>
-        <div class="right-game-info">
-            Time Elapsed: <span class="timer">0</span> Seconds
-            <button class="reset-button"><i class="fas fa-sync"></i></button>
-        </div>
-
         <ul class="card-container">
           <li class="card"><i class="fab"></i></li>
           <li class="card"><i class="fab"></i></li>

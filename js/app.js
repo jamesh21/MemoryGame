@@ -42,25 +42,27 @@ function addCardListeners() {
     for (let i = 0; i < cardContainer.children.length; i++) {
         cardContainer.children[i].addEventListener('click', function (event) {
           event.target.classList.add('card-open');
-
           // no card is currently selected
           if (firstCard === null) {
             firstCard = event.target;
-          } else { // first card selected
+        } else { // first card selected already
             let secondCard = event.target;
             numMoves++;
             movesContainer.textContent = numMoves;
-            if (checkIfSame(firstCard, secondCard)) {
-                correctAnswerAction(firstCard, secondCard);
-            } else {
-              firstCard.classList.add('wrong-match');
-              secondCard.classList.add('wrong-match');
-              cardContainer.classList.add('mouse-stop');
-              setTimeout(incorrectAnswerAction, 1000, firstCard, secondCard);
-            }
+            // Checking if the current move count has reached a threshold for stars to decrement
             if (currentStarCount != calculateStars()) {
                 currentStarCount--;
                 updateStarIcons();
+            }
+            if (checkIfSame(firstCard, secondCard)) {
+                // the cards match
+                correctAnswerAction(firstCard, secondCard);
+            } else { // cards don't match
+              firstCard.classList.add('wrong-match');
+              secondCard.classList.add('wrong-match');
+              cardContainer.classList.add('mouse-stop');
+              // setting a timeout to give time for the animation to process before flipping face down
+              setTimeout(incorrectAnswerAction, 1000, firstCard, secondCard);
             }
             firstCard = null;
         }
@@ -94,8 +96,11 @@ function incorrectAnswerAction(firstCard, secondCard) {
 function checkIfWon() {
     if (numCardsLeft === 0) {
         timeStop = true;
-        swal({
+        swal({ // using sweetalert library to display a modal
           title: 'Congratulations You Win!',
+          text: "It took you " + timerContainer.textContent +
+                    " seconds to match all cards. You achieved a " +
+                    currentStarCount + " star rating.",
           buttons: {
             confirm: 'Play Again?',
             cancel: true
@@ -123,6 +128,7 @@ function resetGame () {
     startTime = Date.now();
     timeStop = false;
     numCardsLeft = list.length;
+    currentStarCount = 3;
     thirdStar.classList.remove('far');
     thirdStar.classList.add('fas');
     secondStar.classList.remove('far');
@@ -165,17 +171,6 @@ function updateStarIcons () {
     }
 }
 
-// Shuffle the starting list
-list = shuffle(list);
-addCardListeners();
-list.forEach(placeCards);
-
-// Used for time elapsed
-window.setInterval(function () {
-    if (!timeStop)
-        timerContainer.textContent = Math.floor((Date.now() - startTime) / 1000);
-}, 1000);
-
 // Add event listener to the reset button
 resetButton.addEventListener('click', function () {
     swal({
@@ -194,3 +189,14 @@ resetButton.addEventListener('click', function () {
       }
     });
 });
+
+// Shuffle the starting list
+list = shuffle(list);
+addCardListeners();
+list.forEach(placeCards);
+
+// Used for time elapsed
+window.setInterval(function () {
+    if (!timeStop)
+        timerContainer.textContent = Math.floor((Date.now() - startTime) / 1000);
+}, 1000);
