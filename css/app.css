@@ -39,7 +39,7 @@ h1 {
 
 .card-container {
     width: 660px;
-    min-height: 680px;
+    height: 680px;
     border-style: solid;
     display: flex;
     flex-wrap: wrap;
@@ -109,15 +109,17 @@ h1 {
     overflow: hidden;
 }
 
-@media (max-width: 749px) {
-    .cardContainer {
-        width: 500px;
+@media screen and (max-width:749px) {
+    .card-container {
+        width: 475px;
+        height: 550px;
     }
-}
-
-@media (min-width: 750px) {
-    .cardContainer {
-        width: 660px;
+    .card {
+        width: 100px;
+        height: 100px;
+    }
+    .card-open {
+        font-size: 35px;
     }
 }
 
